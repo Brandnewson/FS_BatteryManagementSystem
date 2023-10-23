@@ -39,8 +39,8 @@ PlatformIO chosen because [Reason]
 -	Another thing that needs to be ensured is all AMS signals are SCS (see T11.9)
 
 ## Keywords & information
-Accumulator - Accumulators are rechargeable batteries <br>
-Thermocouple - Simply a sensor that is used for measuring temperature <br>
-Battery Management System - Protects the battery from operating outside its safe operating area. <br>
-EMI - Electromagnetic Interference <br>
-CAN bus - high-integrity serial bus system, for our purposes, we're interested in how it tackles EMI effectively. <br>
+**Accumulator** - Accumulators are rechargeable batteries <br>
+**Thermocouple** - Simply a sensor that is used for measuring temperature <br>
+**Battery Management System** - Protects the battery from operating outside its safe operating area. <br>
+**EMI** - Electromagnetic Interference <br>
+**CAN bus** - high-integrity serial bus system, for our purposes, we choose the CAN bus protocol because of how it tackles EMI effectively. <br>
