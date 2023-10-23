@@ -9,7 +9,7 @@ Orion to sell expansions units but the modules are not compatible with the volta
 The following information should bring you up to speed on the key tasks that need to be completed.
 
 ## Objective
-- Extend the Battery Management System by creating our own expansion modules to gain 100% coverage of every single battery pack in the accumulator.
+- Extend the Battery Management System by creating our own expansion modules to gain 100% temperature sensor coverage of every single battery pack in the accumulator.
 
 ## How it works
 - To gain 100% temperature sensor coverage of accumulator, an expansion unit is emulated for the BMS Orion 2.
@@ -23,13 +23,13 @@ The following information should bring you up to speed on the key tasks that nee
 - Because the BMS Orion 2 can now "see" the remaining 70% module temperatures, we gain 100% temperature sensor coverage of the accumulator.
 
 ## Key data
-Circuit:
+### Circuit:
 [insert picture of circuit]
 
-Microcontroller Framework:
+### Microcontroller Framework:
 Arduino Teensy chosen because of plenty of documentation regarding the topic.
 
-Build Platform
+### Build Platform
 PlatformIO chosen because [Reason]
 
 ## Applicable Formula Student Rules
