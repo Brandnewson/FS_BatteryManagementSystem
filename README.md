@@ -14,12 +14,12 @@ The following information should bring you up to speed on the key tasks that nee
 ## How it works
 - To gain 100% temperature sensor coverage of accumulator, an expansion unit is emulated for the BMS Orion 2.
 - This expansion unit is emulated by the CANbus protocol.
-- A total of 132 temperature sensors in [number] battery modules line the accumulator.
+- A total of 132 temperature sensors in 6 battery modules line the accumulator.
 - There is a thermocouple in each battery module that acts as a voltage shunt.
-- We use microcontrollers to process the data from the thermocouple? at specific frequencies. [clarification needed]
-- Grab the highest & lowest temp for each module. [clarification needed]
-- We utilise a multiplexor to "choose" between the [number] battery modules. [clarification needed]
-- Return the highest & lowest temperatures of accumulator to the BMS for safety monitoring. [clarification needed]
+- We use microcontrollers to process the data from the thermocouple at specific frequencies.
+- Grab the voltage, which is converted into the temp for each module.
+- We utilise a multiplexor to "choose" between the 6 battery modules, each connected to a daughter board.
+- Return the highest & lowest temperatures of the accumulator to the BMS for safety monitoring.
 - Because the BMS Orion 2 can now "see" the remaining 70% module temperatures, we gain 100% temperature sensor coverage of the accumulator.
 
 ## Key data
@@ -29,8 +29,17 @@ The following information should bring you up to speed on the key tasks that nee
 ### Microcontroller Framework:
 Arduino Teensy chosen because of plenty of documentation regarding the topic.
 
+### CANbus
+TI ISO1050 is chosen as our CAN-bus transceiver module because:
+- mainly due to it being galvanically isolated
+- prevents noise currents on a data bus
+- prevents other circuits from entering the local ground and interfering with or damaging sensitive circuitry
+- ambient temperature range of –55°C to 105°C
+- -27 V to 40 V and overtemperature shutdown
+- -12-V to 12-V common-mode range 
+
 ### Build Platform
-PlatformIO chosen because [Reason]
+PlatformIO chosen because it supports the arduino teensy, and is an easy-to-add extension in VScode
 
 ## Applicable Formula Student Rules
 -	Most rules are covered in EV5.8, most rules are covered by the temperature sensors we are using
