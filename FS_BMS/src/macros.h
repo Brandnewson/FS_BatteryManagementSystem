@@ -8,6 +8,12 @@
 #define MUX_S_PIN_0100 14
 #define MUX_S_PIN_1000 13
 #define MUX_ENABLE_PIN 6
-#define MUX_DATA_PIN A0
+#define DB_1 A0             // daughter board 1
+#define DB_2 A1
+#define DB_3 A2 
+#define DB_4 A3 
+#define DB_5 A4 
+#define DB_6 A5             // daughter board 6
+
 
 #endif

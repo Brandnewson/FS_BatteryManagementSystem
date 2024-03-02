@@ -7,15 +7,19 @@
 #include "Arduino.h"
 #include "macros.h"
 #include "multiplexer_functions.h"
-#include <cmath> // for std::abs
-
+// #include <cmath> // for std::abs
 // #include <iostream>
+
 // #include <array>
 // Define a struct to hold temperature and voltage values
 struct TemperatureVoltagePair {
   float temperature;
   float voltage;
 };
+
+// 
+  float daughter_board_1_voltage;
+  float daughter_board_2_voltage;
 
 // Define the lookup table
 TemperatureVoltagePair temperatureVoltageTable[] = {
@@ -82,7 +86,7 @@ void setup()
   pinMode(MUX_S_PIN_0100, OUTPUT);
   pinMode(MUX_S_PIN_1000, OUTPUT);
   pinMode(MUX_ENABLE_PIN, OUTPUT);
-  pinMode(MUX_DATA_PIN, INPUT);
+  pinMode(DB_1, INPUT);
 
   // Initialize LED digital pin as an output.
   pinMode(LED_BUILTIN, OUTPUT);
@@ -90,20 +94,55 @@ void setup()
 
 void loop()
 {
-  // Example: Lookup temperature for a voltage of 1.86
-  float voltageToLookup = 1.88;
-  int temperature = lookupTemperatureForVoltage(voltageToLookup);
+  // Example: Lookup temperature for a random voltages, in this case 1.44
+  // float voltageToLookup = 1.44;
+  // int temperature = lookupTemperatureForVoltage(voltageToLookup);
+
+  // // Print the result
+  // Serial.print("Voltage: ");
+  // Serial.print(voltageToLookup);
+  // Serial.print(" volts, Temperature: ");
+  // Serial.println(temperature);
+
+  // delay(1000);
+
+
+  // This is to be repeated from all 6 daughter boards
+
+  // Select the first sensor on Daughter Board 1
+  digitalWrite(MUX_S_PIN_0001, HIGH);
+  digitalWrite(MUX_S_PIN_0010, LOW);
+  digitalWrite(MUX_S_PIN_0100, LOW);
+  digitalWrite(MUX_S_PIN_1000, LOW);
+
+  // Select daughter board 1 voltage 0001
+  daughter_board_1_voltage = analogRead(DB_1);
+  // daughter_board_1_voltage = 1.44; // giving it a false voltage first
+  int temperature = lookupTemperatureForVoltage(daughter_board_1_voltage);
 
   // Print the result
-  Serial.print("Voltage: ");
-  Serial.print(voltageToLookup);
+  Serial.print("Voltage of DB 1, sensor 1: ");
+  Serial.print(daughter_board_1_voltage);
   Serial.print(" volts, Temperature: ");
   Serial.println(temperature);
 
-  delay(1000);
-  
-  // // Example: Select the first sensor on daughter board 1
-  // selectSensor(1, 1);
+  // Select the second sensor on daughter board 1
+  digitalWrite(MUX_S_PIN_0001, LOW);
+  digitalWrite(MUX_S_PIN_0010, HIGH);
+  digitalWrite(MUX_S_PIN_0100, LOW);
+  digitalWrite(MUX_S_PIN_1000, LOW);
+
+  // Select daughter board 1 voltage 0010 
+  daughter_board_2_voltage = analogRead(DB_1);
+  // daughter_board_2_voltage = 1.24;  // giving it a second false voltage
+
+  temperature = lookupTemperatureForVoltage(daughter_board_2_voltage);
+
+  // Print the result
+  Serial.print("Voltage of DB 1, sensor 1: ");
+  Serial.print(daughter_board_1_voltage);
+  Serial.print(" volts, Temperature: ");
+  Serial.println(temperature);
 
   // // Read temperature data from the selected sensor
   // temperature = readTemperature();
@@ -120,13 +159,13 @@ void loop()
 
 void selectSensor(int daughtBoard, int sensorNumber)
 {
-  // Convert the sensor number to binary and apply it to the S pins
-  digitalWrite(MUX_S_PIN_0001, bitRead(sensorNumber, 0));
-  digitalWrite(MUX_S_PIN_0010, bitRead(sensorNumber, 1));
-  digitalWrite(MUX_S_PIN_0100, bitRead(sensorNumber, 2));
-  digitalWrite(MUX_S_PIN_1000, bitRead(sensorNumber, 3));
+  // format for selecting the appropriate pins
+  // digitalWrite(MUX_S_PIN_0001, HIGH);
+  // digitalWrite(MUX_S_PIN_0010, LOW);
+  // digitalWrite(MUX_S_PIN_0100, LOW);
+  // digitalWrite(MUX_S_PIN_1000, LOW);
 
-  // Enable the multiplexer
+  // Enable the multiplexer???
   digitalWrite(MUX_ENABLE_PIN, HIGH);
 }
 
@@ -140,7 +179,9 @@ int readTemperature()
   // return temperature;
 
   // Simulate temperature reading (replace with actual sensor reading when available)
-  return random(0, 100);  // Simulating a temperature value between 0 and 100
+
+    float random_temperature = 1.44;
+  return random_temperature;
 }
 
 void sendTemperatureOverCAN(int temperature)
