@@ -91,7 +91,19 @@ void setup()
 void loop()
 {
   // Example: Lookup temperature for a voltage of 1.86
-  float voltageToLookup = 1.88;
+  // float voltageToLookup = 1.88;
+
+  // digitalWrite(teensy_S0, 0);
+  // digitalWrite(teensy_S1, 0);
+  // digitalWrite(teensy_S2, 0);
+  // digitalWrite(teensy_S3, 0);
+  // digitalWrite(teensy_S4, 0);
+  // digitalWrite(teensy_S5, 0);
+  // digitalWrite(teensy_S6, 0);
+  // digitalWrite(teensy_S7, 0);
+
+  float voltageToLookup = analogRead(teensy_D_OUT1);
+  
   int temperature = lookupTemperatureForVoltage(voltageToLookup);
 
   // Print the result
@@ -117,6 +129,7 @@ void loop()
   // // Wait for a second
   // delay(1000);
 }
+
 
 void selectSensor(int daughtBoard, int sensorNumber)
 {
