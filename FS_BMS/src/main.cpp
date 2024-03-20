@@ -9,6 +9,7 @@
 #include "multiplexer_functions.h"
 #include <cmath> // for std::abs
 
+const float MAX_TEENSY_VOLTAGE = 3.3;
 // #include <iostream>
 // #include <array>
 // Define a struct to hold temperature and voltage values
@@ -77,12 +78,17 @@ void setup()
 {
   // Initialize CD74HC4067 multiplexer
   pinMode(MUX_COMMON_PIN, OUTPUT);
-  pinMode(MUX_S_PIN_0001, OUTPUT);
-  pinMode(MUX_S_PIN_0010, OUTPUT);
-  pinMode(MUX_S_PIN_0100, OUTPUT);
-  pinMode(MUX_S_PIN_1000, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_0001, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_0010, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_0100, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_1000, OUTPUT);
+  pinMode(MUX_BRAVO_S_PIN_0001, OUTPUT);
+  pinMode(MUX_BRAVO_S_PIN_0010, OUTPUT);
+  pinMode(MUX_BRAVO_S_PIN_0100, OUTPUT);
+  
   pinMode(MUX_ENABLE_PIN, OUTPUT);
-  pinMode(MUX_DATA_PIN, INPUT);
+  // pinMode(MUX_DATA_PIN, INPUT);
+  pinMode(teensy_D_OUT1, INPUT); 
 
   // Initialize LED digital pin as an output.
   pinMode(LED_BUILTIN, OUTPUT);
@@ -93,18 +99,20 @@ void loop()
   // Example: Lookup temperature for a voltage of 1.86
   // float voltageToLookup = 1.88;
 
-  // digitalWrite(teensy_S0, 0);
-  // digitalWrite(teensy_S1, 0);
-  // digitalWrite(teensy_S2, 0);
-  // digitalWrite(teensy_S3, 0);
-  // digitalWrite(teensy_S4, 0);
-  // digitalWrite(teensy_S5, 0);
-  // digitalWrite(teensy_S6, 0);
+  digitalWrite(MUX_ALPHA_S_PIN_0001, LOW);
+  digitalWrite(MUX_ALPHA_S_PIN_0010, LOW);
+  digitalWrite(MUX_ALPHA_S_PIN_0100, LOW);
+  digitalWrite(MUX_ALPHA_S_PIN_1000, LOW);
+  digitalWrite(MUX_BRAVO_S_PIN_0001, LOW);
+  digitalWrite(MUX_BRAVO_S_PIN_0010, LOW);
+  digitalWrite(MUX_BRAVO_S_PIN_0100, LOW);
   // digitalWrite(teensy_S7, 0);
 
-  float voltageToLookup = analogRead(teensy_D_OUT1);
+  float sensorValue = (analogRead(teensy_D_OUT1));
+
+  float voltageToLookup = (sensorValue * (MAX_TEENSY_VOLTAGE / 1023.0));
   
-  int temperature = lookupTemperatureForVoltage(voltageToLookup);
+  float temperature = lookupTemperatureForVoltage(voltageToLookup);
 
   // Print the result
   Serial.print("Voltage: ");
@@ -134,10 +142,10 @@ void loop()
 void selectSensor(int daughtBoard, int sensorNumber)
 {
   // Convert the sensor number to binary and apply it to the S pins
-  digitalWrite(MUX_S_PIN_0001, bitRead(sensorNumber, 0));
-  digitalWrite(MUX_S_PIN_0010, bitRead(sensorNumber, 1));
-  digitalWrite(MUX_S_PIN_0100, bitRead(sensorNumber, 2));
-  digitalWrite(MUX_S_PIN_1000, bitRead(sensorNumber, 3));
+  // digitalWrite(MUX_S_PIN_0001, bitRead(sensorNumber, 0));
+  // digitalWrite(MUX_S_PIN_0010, bitRead(sensorNumber, 1));
+  // digitalWrite(MUX_S_PIN_0100, bitRead(sensorNumber, 2));
+  // digitalWrite(MUX_S_PIN_1000, bitRead(sensorNumber, 3));
 
   // Enable the multiplexer
   digitalWrite(MUX_ENABLE_PIN, HIGH);
