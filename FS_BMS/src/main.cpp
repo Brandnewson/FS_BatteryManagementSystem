@@ -96,9 +96,6 @@ void setup()
 
 void loop()
 {
-  // Example: Lookup temperature for a voltage of 1.86
-  // float voltageToLookup = 1.88;
-
   digitalWrite(MUX_ALPHA_S_PIN_0001, LOW);
   digitalWrite(MUX_ALPHA_S_PIN_0010, LOW);
   digitalWrite(MUX_ALPHA_S_PIN_0100, LOW);
@@ -106,7 +103,6 @@ void loop()
   digitalWrite(MUX_BRAVO_S_PIN_0001, LOW);
   digitalWrite(MUX_BRAVO_S_PIN_0010, LOW);
   digitalWrite(MUX_BRAVO_S_PIN_0100, LOW);
-  // digitalWrite(teensy_S7, 0);
 
   float sensorValue = (analogRead(teensy_D_OUT1));
 
