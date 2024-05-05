@@ -7,7 +7,6 @@
 #define MUX_ALPHA_S_PIN_0010 21
 #define MUX_ALPHA_S_PIN_0100 22
 #define MUX_ALPHA_S_PIN_1000 23
-#define MUX_ENABLE_PIN 6
 // CD74HC4067 multiplexer BRAVO pins
 #define MUX_BRAVO_S_PIN_0001 0
 #define MUX_BRAVO_S_PIN_0010 1

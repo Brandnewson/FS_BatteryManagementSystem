@@ -86,7 +86,6 @@ void setup()
   pinMode(MUX_BRAVO_S_PIN_0010, OUTPUT);
   pinMode(MUX_BRAVO_S_PIN_0100, OUTPUT);
   
-  pinMode(MUX_ENABLE_PIN, OUTPUT);
   // pinMode(MUX_DATA_PIN, INPUT);
   pinMode(teensy_D_OUT1, INPUT); 
 
@@ -96,27 +95,90 @@ void setup()
 
 void loop()
 {
-  digitalWrite(MUX_ALPHA_S_PIN_0001, LOW);
-  digitalWrite(MUX_ALPHA_S_PIN_0010, LOW);
-  digitalWrite(MUX_ALPHA_S_PIN_0100, LOW);
-  digitalWrite(MUX_ALPHA_S_PIN_1000, LOW);
-  digitalWrite(MUX_BRAVO_S_PIN_0001, LOW);
-  digitalWrite(MUX_BRAVO_S_PIN_0010, LOW);
-  digitalWrite(MUX_BRAVO_S_PIN_0100, LOW);
+  // Loop through MUX_ALPHA
+  for (int alpha = 0; alpha <= 15; alpha++) {
+    // Convert alpha to binary representation
+    String alphaBinary = String(alpha, BIN);
+    
+    // Pad the binary string with zeros to make it 4 bits long
+    while (alphaBinary.length() < 4) {
+      alphaBinary = "0" + alphaBinary;
+    }
+    
+    // Set the select pins for MUX_ALPHA
+    digitalWrite(MUX_ALPHA_S_PIN_0001, alphaBinary[3] == '1' ? HIGH : LOW);
+    digitalWrite(MUX_ALPHA_S_PIN_0010, alphaBinary[2] == '1' ? HIGH : LOW);
+    digitalWrite(MUX_ALPHA_S_PIN_0100, alphaBinary[1] == '1' ? HIGH : LOW);
+    digitalWrite(MUX_ALPHA_S_PIN_1000, alphaBinary[0] == '1' ? HIGH : LOW);
+    
+    // Read sensor value
+    float sensorValue = analogRead(teensy_D_OUT1);
+    float voltageToLookup = sensorValue * (MAX_TEENSY_VOLTAGE / 1023.0);
+    float temperature = lookupTemperatureForVoltage(voltageToLookup);
 
-  float sensorValue = (analogRead(teensy_D_OUT1));
+    // Print the result for MUX_ALPHA
+    Serial.print("MUX_ALPHA (Binary): ");
+    Serial.print(alphaBinary);
+    Serial.print(", Voltage: ");
+    Serial.print(voltageToLookup);
+    Serial.print(" volts, Temperature: ");
+    Serial.println(temperature);
 
-  float voltageToLookup = (sensorValue * (MAX_TEENSY_VOLTAGE / 1023.0));
+    delay(1000);
+  }
+
+  // Loop through MUX_BRAVO
+  for (int bravo = 0; bravo <= 6; bravo++) {
+    // Convert bravo to binary representation
+    String bravoBinary = String(bravo, BIN);
+    
+    // Pad the binary string with zeros to make it 3 bits long
+    while (bravoBinary.length() < 3) {
+      bravoBinary = "0" + bravoBinary;
+    }
+    
+    // Set the select pins for MUX_BRAVO
+    digitalWrite(MUX_BRAVO_S_PIN_0001, bravoBinary[2] == '1' ? HIGH : LOW);
+    digitalWrite(MUX_BRAVO_S_PIN_0010, bravoBinary[1] == '1' ? HIGH : LOW);
+    digitalWrite(MUX_BRAVO_S_PIN_0100, bravoBinary[0] == '1' ? HIGH : LOW);
+
+    // Read sensor value
+    float sensorValue = analogRead(teensy_D_OUT1);
+    float voltageToLookup = sensorValue * (MAX_TEENSY_VOLTAGE / 1023.0);
+    float temperature = lookupTemperatureForVoltage(voltageToLookup);
+
+    // Print the result for MUX_BRAVO
+    Serial.print("MUX_BRAVO (Binary): ");
+    Serial.print(bravoBinary);
+    Serial.print(", Voltage: ");
+    Serial.print(voltageToLookup);
+    Serial.print(" volts, Temperature: ");
+    Serial.println(temperature);
+
+    delay(1000);
+  }
+
+  // digitalWrite(MUX_ALPHA_S_PIN_0001, LOW);
+  // digitalWrite(MUX_ALPHA_S_PIN_0010, LOW);
+  // digitalWrite(MUX_ALPHA_S_PIN_0100, LOW);
+  // digitalWrite(MUX_ALPHA_S_PIN_1000, LOW);
+  // digitalWrite(MUX_BRAVO_S_PIN_0001, LOW);
+  // digitalWrite(MUX_BRAVO_S_PIN_0010, LOW);
+  // digitalWrite(MUX_BRAVO_S_PIN_0100, LOW);
+
+  // float sensorValue = (analogRead(teensy_D_OUT1));
+
+  // float voltageToLookup = (sensorValue * (MAX_TEENSY_VOLTAGE / 1023.0));
   
-  float temperature = lookupTemperatureForVoltage(voltageToLookup);
+  // float temperature = lookupTemperatureForVoltage(voltageToLookup);
 
-  // Print the result
-  Serial.print("Voltage: ");
-  Serial.print(voltageToLookup);
-  Serial.print(" volts, Temperature: ");
-  Serial.println(temperature);
+  // // Print the result
+  // Serial.print("Voltage: ");
+  // Serial.print(voltageToLookup);
+  // Serial.print(" volts, Temperature: ");
+  // Serial.println(temperature);
 
-  delay(1000);
+  // delay(1000);
   
   // // Example: Select the first sensor on daughter board 1
   // selectSensor(1, 1);
@@ -143,8 +205,6 @@ void selectSensor(int daughtBoard, int sensorNumber)
   // digitalWrite(MUX_S_PIN_0100, bitRead(sensorNumber, 2));
   // digitalWrite(MUX_S_PIN_1000, bitRead(sensorNumber, 3));
 
-  // Enable the multiplexer
-  digitalWrite(MUX_ENABLE_PIN, HIGH);
 }
 
 int readTemperature()
