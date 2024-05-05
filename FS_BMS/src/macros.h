@@ -2,6 +2,7 @@
 #define MACROS_H
 
 // CD74HC4067 multiplexer ALPHA pins
+// CD74HC4067 multiplexer ALPHA pins
 #define MUX_COMMON_PIN 1
 #define MUX_ALPHA_S_PIN_0001 20
 #define MUX_ALPHA_S_PIN_0010 21
