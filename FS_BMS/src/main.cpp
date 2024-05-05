@@ -78,38 +78,6 @@ float lookupTemperatureForVoltage(float voltage) {
     return -1.0f;
 }
 
-void setup()
-{
-  // Initialize CD74HC4067 multiplexer
-  pinMode(MUX_COMMON_PIN, OUTPUT);
-  pinMode(MUX_ALPHA_S_PIN_0001, OUTPUT);
-  pinMode(MUX_ALPHA_S_PIN_0010, OUTPUT);
-  pinMode(MUX_ALPHA_S_PIN_0100, OUTPUT);
-  pinMode(MUX_ALPHA_S_PIN_1000, OUTPUT);
-  pinMode(MUX_BRAVO_S_PIN_0001, OUTPUT);
-  pinMode(MUX_BRAVO_S_PIN_0010, OUTPUT);
-  pinMode(MUX_BRAVO_S_PIN_0100, OUTPUT);
-  
-  // pinMode(MUX_DATA_PIN, INPUT);
-  pinMode(teensy_D_OUT1, INPUT); 
-
-  // Initialize LED digital pin as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
-}
-
-
-void loop()
-{
-  // Loop through the first mux (MUX ALPHA)
-  loopThroughMUX(MUX_ALPHA_S_PIN_0001, MUX_ALPHA_S_PIN_0010, MUX_ALPHA_S_PIN_0100, MUX_ALPHA_S_PIN_1000, MAX_ITERATIONS_ALPHA, "MUX_ALPHA");
-  // Loop through the first mux (MUX BRAVO)
-  loopThroughMUX(MUX_BRAVO_S_PIN_0001, MUX_BRAVO_S_PIN_0010, MUX_BRAVO_S_PIN_0100, LOW, MAX_ITERATIONS_BRAVO, "MUX_BRAVO");
-
-  // Send temperature data over the CAN bus
-  // sendTemperatureOverCAN(temperature);
-
-}
-
 void loopThroughMUX(int pin1, int pin2, int pin3, int pin4, int maxIterations, String muxName) {
   for (int i = 0; i <= maxIterations; i++) {
     // Convert i to binary representation
@@ -149,4 +117,36 @@ void sendTemperatureOverCAN(int temperature)
 {
   // Implement CAN bus communication to send the temperature data
   // Use appropriate CAN bus library functions
+}
+
+void setup()
+{
+  // Initialize CD74HC4067 multiplexer
+  pinMode(MUX_COMMON_PIN, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_0001, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_0010, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_0100, OUTPUT);
+  pinMode(MUX_ALPHA_S_PIN_1000, OUTPUT);
+  pinMode(MUX_BRAVO_S_PIN_0001, OUTPUT);
+  pinMode(MUX_BRAVO_S_PIN_0010, OUTPUT);
+  pinMode(MUX_BRAVO_S_PIN_0100, OUTPUT);
+  
+  // pinMode(MUX_DATA_PIN, INPUT);
+  pinMode(teensy_D_OUT1, INPUT); 
+
+  // Initialize LED digital pin as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+
+void loop()
+{
+  // Loop through the first mux (MUX ALPHA)
+  loopThroughMUX(MUX_ALPHA_S_PIN_0001, MUX_ALPHA_S_PIN_0010, MUX_ALPHA_S_PIN_0100, MUX_ALPHA_S_PIN_1000, MAX_ITERATIONS_ALPHA, "MUX_ALPHA");
+  // Loop through the first mux (MUX BRAVO)
+  loopThroughMUX(MUX_BRAVO_S_PIN_0001, MUX_BRAVO_S_PIN_0010, MUX_BRAVO_S_PIN_0100, LOW, MAX_ITERATIONS_BRAVO, "MUX_BRAVO");
+
+  // Send temperature data over the CAN bus
+  // sendTemperatureOverCAN(temperature);
+
 }
