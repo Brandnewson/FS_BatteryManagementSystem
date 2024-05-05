@@ -16,8 +16,6 @@ const int MAX_ITERATIONS_BRAVO = 6;   // how many pins of mux bravo to loop thro
 void loopThroughMUX(int pin1, int pin2, int pin3, int pin4, int maxIterations, String muxName);
 
 const float MAX_TEENSY_VOLTAGE = 3.3;
-// #include <iostream>
-// #include <array>
 // Define a struct to hold temperature and voltage values
 struct TemperatureVoltagePair {
   float temperature;
